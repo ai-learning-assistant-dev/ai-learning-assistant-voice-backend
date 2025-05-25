@@ -1,0 +1,21 @@
+[model]
+name = "kokoro"
+repo_id = 'hexgrad/Kokoro-82M-v1.1-zh'
+
+
+[audio]
+n_zeros = 5000 # How much silence to insert between paragraphs: 5000 is about 0.2 seconds
+sample_rate = 24000
+
+[voices]
+default = "zf_001"
+available = ["zf_001", "zm_010"]
+
+[performance]
+use_gpu = true
+batch_size = 8
+max_concurrent = 4
+
+[paths]
+model_path = "models/kokoro/weights.bin"
+vocoder_path = "models/kokoro/vocoder.bin"

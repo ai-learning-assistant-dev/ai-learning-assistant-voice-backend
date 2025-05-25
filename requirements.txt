@@ -1,0 +1,6 @@
+click
+fastapi
+numpy
+soundfile
+uvicorn
+toml
