@@ -5,7 +5,7 @@ from kokoro import KModel, KPipeline
 import numpy as np
 import toml
 
-class KokoroTTSModel(TTSModelInterface):
+class TTSModel(TTSModelInterface):
     def __init__(self, config_path: str):
         with open(config_path) as f:
             config = toml.load(f)
@@ -19,7 +19,6 @@ class KokoroTTSModel(TTSModelInterface):
 
         self.model = KModel(repo_id=self.repo_id).to(self.device).eval()
         self.pipeline = KPipeline(lang_code='z', repo_id=self.repo_id, model=self.model, en_callable=en_callable)
-        self.sample_rate = config['audio']['sample_rate']
         self.voice_list = config['voices']['available']
         self.default_voice = config['voices']['default']
     def synthesize(self, text: str, voice_type: str, speed: float) -> np.ndarray:
@@ -38,12 +37,15 @@ class KokoroTTSModel(TTSModelInterface):
             device=self.device,
             voices=self.voice_list,
             default_voice=self.default_voice,
-            description="Kokoro 模型推理速度快，支持CPU推理和GPU推理。"
+            description="Kokoro 模型推理速度快"
         )
     
     @staticmethod
-    def create(config) -> 'KokoroTTSModel':
-        return KokoroTTSModel(config)
+    def create() -> 'TTSModel':
+        import os
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        config = os.path.join(current_dir, "config.toml")
+        return TTSModel(config)
         
         
 

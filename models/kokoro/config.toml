@@ -2,11 +2,6 @@
 name = "kokoro"
 repo_id = 'hexgrad/Kokoro-82M-v1.1-zh'
 
-
-[audio]
-n_zeros = 5000 # How much silence to insert between paragraphs: 5000 is about 0.2 seconds
-sample_rate = 24000
-
 [voices]
 default = "zf_001"
 available = ["zf_001", "zm_010"]

@@ -23,7 +23,7 @@ class TTSModelInterface(ABC):
     
     @staticmethod
     @abstractmethod
-    def create(config) -> 'TTSModelInterface':
+    def create() -> 'TTSModelInterface':
         """Initialize the model with configuration.
         
         Returns:
