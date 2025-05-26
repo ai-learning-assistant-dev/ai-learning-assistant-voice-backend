@@ -10,7 +10,7 @@ class TTSModel(TTSModelInterface):
         with open(config_path) as f:
             config = toml.load(f)
         
-        self.device = "cuda" if torch.cuda.is_available() and config['performance']['use_gpu'] is True else "cpu"
+        self.device = "cuda" if torch.cuda.is_available() and config['performance']['use_gpu'] == True else "cpu"
         self.repo_id = config['model']['repo_id']
         
         en_pipeline = KPipeline(lang_code='a', repo_id=self.repo_id, model=False)
