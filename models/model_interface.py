@@ -35,3 +35,8 @@ class TTSModelInterface(ABC):
     def get_model_info(self) -> ModelInfo:
         """Get model information."""
         pass
+    
+    @abstractmethod
+    def max_input_length(self) -> int:
+        """Get the maximum input length for the model."""
+        pass

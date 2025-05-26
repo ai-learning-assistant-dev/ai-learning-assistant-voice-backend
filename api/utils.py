@@ -2,10 +2,10 @@
 import re
 
 
-def is_text_too_complex(text):
+def is_text_too_complex(text, max_length=100):
     """检查文本是否过于复杂，需要特殊处理"""
     # 检查文本长度
-    if len(text) > 300:
+    if len(text) > max_length:
         return True
     
     # 检查是否包含大量特殊字符或非中文/英文字符

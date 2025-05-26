@@ -28,9 +28,6 @@ class TTSRequest(BaseModel):
     response_format: str = "mp3"
     speed: float = 1.0
     model: str = "Kokoro"
-    
-
-
 
 @app.post("/v1/audio/speech")
 async def tts_handler(request: TTSRequest):
@@ -39,11 +36,12 @@ async def tts_handler(request: TTSRequest):
         model_name = env.DEFAULT_MODEL if not request.model else request.model
         model = model_manager.get_model(model_name)
          # 处理音频生成
-        if is_text_too_complex(request.input):
-            text_segments = split_text_safely(request.input)
+        if is_text_too_complex(request.input, model.max_input_length()):
+            text_segments = split_text_safely(request.input, model.max_input_length())
             segment_audios = []
             for segment in text_segments:
-                audio_data, sr = model.synthesize(segment, request.voice, request.speed)
+                logging.info(f"正在处理文本片段: {segment}")
+                audio_data = model.synthesize(segment, request.voice, request.speed)
                 segment_audios.append(audio_data)
             combined_audio = np.concatenate(segment_audios)
         else:

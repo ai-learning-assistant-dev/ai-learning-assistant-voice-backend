@@ -2,6 +2,17 @@ import click
 from models.model_manager import model_manager
 from api.api_handler import app
 import uvicorn
+import logging
+
+def setup_logging(level):
+    logging.basicConfig(
+        level=level,
+        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+        handlers=[logging.StreamHandler()]
+    )
+
+# 调用函数设置日志级别
+setup_logging(logging.INFO)
 
 @click.group()
 def cli():

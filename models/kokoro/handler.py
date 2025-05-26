@@ -26,11 +26,14 @@ class TTSModel(TTSModelInterface):
             logging.warning(f"使用默认声音: {self.default_voice}")
             voice_type = self.default_voice
         generator = self.pipeline(text, voice_type, speed)
-        result = next(generator)
-        wav = result.audio
-        if wav is None:
+        result_wav = None
+        for result in generator:
+            if result.audio is not None:
+                wav = result.audio.cpu().numpy()
+                result_wav = np.concatenate([result_wav, wav]) if result_wav is not None else wav
+        if result_wav is None:
             raise ValueError("合成的音频数据为空")
-        return wav.cpu().numpy()
+        return result_wav 
     def get_model_info(self) -> ModelInfo:
         return ModelInfo(
             model_name="Kokoro",
@@ -39,6 +42,8 @@ class TTSModel(TTSModelInterface):
             default_voice=self.default_voice,
             description="Kokoro 模型推理速度快"
         )
+    def max_input_length(self) -> int:
+        return 100
     
     @staticmethod
     def create() -> 'TTSModel':
