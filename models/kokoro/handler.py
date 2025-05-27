@@ -1,9 +1,11 @@
 import logging
+import os
 import torch
 from models.model_interface import TTSModelInterface, ModelInfo
 from kokoro import KModel, KPipeline
 import numpy as np
 import toml
+import models.voice_util as voice_util
 
 class TTSModel(TTSModelInterface):
     def __init__(self, config_path: str):
@@ -11,6 +13,7 @@ class TTSModel(TTSModelInterface):
             config = toml.load(f)
         
         self.device = "cuda" if torch.cuda.is_available() and config['performance']['use_gpu'] == True else "cpu"
+        logging.info(f"使用设备: {self.device}")
         self.repo_id = config['model']['repo_id']
         
         en_pipeline = KPipeline(lang_code='a', repo_id=self.repo_id, model=False)
@@ -19,13 +22,16 @@ class TTSModel(TTSModelInterface):
 
         self.model = KModel(repo_id=self.repo_id).to(self.device).eval()
         self.pipeline = KPipeline(lang_code='z', repo_id=self.repo_id, model=self.model, en_callable=en_callable)
-        self.voice_list = config['voices']['available']
-        self.default_voice = config['voices']['default']
+
+        self.default_voice = config['voice']['default_voice']
+        self.model_name = config['model']['name']
+        
+        self.current_dir = os.path.dirname(os.path.abspath(__file__))
+        self.voice_dir = os.path.join(self.current_dir, "voices")
+        self.available_voices = voice_util.load_voice_config(os.path.join(self.voice_dir, "voice_config.json"))
     def synthesize(self, text: str, voice_type: str, speed: float) -> np.ndarray:
-        if voice_type not in self.voice_list:
-            logging.warning(f"使用默认声音: {self.default_voice}")
-            voice_type = self.default_voice
-        generator = self.pipeline(text, voice_type, speed)
+        voice = self.available_voices.get_voice_config(voice_type, self.default_voice)
+        generator = self.pipeline(text, voice.get_voice_name(), speed)
         result_wav = None
         for result in generator:
             if result.audio is not None:
@@ -36,9 +42,9 @@ class TTSModel(TTSModelInterface):
         return result_wav 
     def get_model_info(self) -> ModelInfo:
         return ModelInfo(
-            model_name="Kokoro",
+            model_name=self.model_name,
             device=self.device,
-            voices=self.voice_list,
+            voices=[voice.name for voice in self.available_voices.voices.values()],
             default_voice=self.default_voice,
             description="Kokoro 模型推理速度快"
         )
@@ -49,7 +55,7 @@ class TTSModel(TTSModelInterface):
     def create() -> 'TTSModel':
         import os
         current_dir = os.path.dirname(os.path.abspath(__file__))
-        config = os.path.join(current_dir, "config.toml")
+        config = os.path.join(current_dir, "model_config.toml")
         return TTSModel(config)
         
         

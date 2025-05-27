@@ -5,3 +5,7 @@ __pycache__
 *.so
 *.dll
 *.mp3
+tts
+.venv
+.python-version
+.vscode

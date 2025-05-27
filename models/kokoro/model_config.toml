@@ -1,0 +1,13 @@
+[model]
+name = "kokoro"
+repo_id = 'hexgrad/Kokoro-82M-v1.1-zh'
+
+[voice]
+default_voice = "zf_001"
+
+[performance]
+use_gpu = true
+
+[paths]
+model_path = "models/kokoro/weights.bin"
+vocoder_path = "models/kokoro/vocoder.bin"

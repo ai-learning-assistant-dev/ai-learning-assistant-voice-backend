@@ -14,7 +14,7 @@ environment_variables: dict[str, Callable[[], Any]] = {
     
     # ================== Runtime Env Vars ==================
     # The default model to use.
-    "DEFAULT_MODEL": lambda: os.getenv("DEFAULT_MODEL", "Kokoro"),
+    "DEFAULT_MODEL": lambda: os.getenv("DEFAULT_MODEL", "kokoro"),
 }
 
 # --8<-- [end:env-vars-definition]

@@ -1,0 +1,16 @@
+{
+    "voices": [
+        {
+            "name": "zf_001",
+            "description": "女声",
+            "filename": "placeholder",
+            "language": "Chinese"
+        },
+        {
+            "name": "zm_010",
+            "description": "男声",
+            "filename": "placeholder",
+            "language": "Chinese"
+        }
+    ]
+}

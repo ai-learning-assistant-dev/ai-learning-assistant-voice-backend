@@ -3,6 +3,7 @@ from models.model_manager import model_manager
 from api.api_handler import app
 import uvicorn
 import logging
+import traceback
 
 def setup_logging(level):
     logging.basicConfig(
@@ -34,6 +35,9 @@ def run(model_names, port):
             click.echo(f"成功加载模型: {model_name}")
         except Exception as e:
             click.echo(f"加载模型 {model_name} 失败: {str(e)}", err=True)
+            logging.error(f"加载模型 {model_name} 的完整错误信息:")
+            logging.error(traceback.format_exc())  # 打印完整栈信息
+            
     
     uvicorn.run(app, host="0.0.0.0", port=port)
     

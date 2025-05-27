@@ -1,0 +1,18 @@
+{
+    "voices": [
+        {
+            "name": "vmz",
+            "description": "vmz",
+            "filename": "vmz.wav",
+            "text": "我觉得真的是他们这个宣传鼓动策略，挺牛逼的。",
+            "language": "Chinese"
+        },
+        {
+            "name": "glw",
+            "description": "顾桑",
+            "filename": "glw.wav",
+            "text": "窗外的雨滴轻轻敲打着玻璃，仿佛在演奏一首无声的夜曲。他翻开那本泛黄的日记本，指尖轻，指尖触碰纸页的瞬间，记忆如潮水般涌来。1987年春天，我在这里遇见了她。褪色的钢笔字在台灯下微微闪烁。",
+            "language": "Chinese"
+        }
+    ]
+}

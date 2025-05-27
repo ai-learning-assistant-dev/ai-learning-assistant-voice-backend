@@ -1,6 +1,7 @@
 # api/main.py
 import io
 import logging
+import traceback
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import StreamingResponse
 import numpy as np
@@ -25,9 +26,9 @@ app.add_middleware(
 class TTSRequest(BaseModel):
     input: str
     voice: str
-    response_format: str = "mp3"
+    response_format: str
     speed: float = 1.0
-    model: str = "Kokoro"
+    model: str
 
 @app.post("/v1/audio/speech")
 async def tts_handler(request: TTSRequest):
@@ -62,4 +63,5 @@ async def tts_handler(request: TTSRequest):
         )
     except Exception as e:
         logging.error(f"TTS处理出错: {str(e)}", exc_info=True)
+        logging.debug(traceback.format_exc())
         raise HTTPException(status_code=500, detail=f"TTS处理出错: {str(e)}")
