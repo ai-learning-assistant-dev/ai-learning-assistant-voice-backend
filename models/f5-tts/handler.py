@@ -2,7 +2,7 @@ from importlib.resources import files
 import os
 from f5_tts.api import F5TTS
 import numpy as np
-from models.model_interface import TTSModelInterface, ModelInfo
+from models.model_interface import TTSModelInterface, ModelDetail, VoiceDetail
 import toml
 import models.voice_util as voice_util
 
@@ -29,12 +29,11 @@ class TTSModel(TTSModelInterface):
         if wav is None:
             raise ValueError("合成的音频数据为空")
         return wav 
-    def get_model_info(self) -> ModelInfo:
-        return ModelInfo(
+    def get_model_info(self) -> ModelDetail:
+        return ModelDetail(
             model_name=self.model_name,
             device=self.f5tts.device,
-            voices=[voice.name for voice in self.available_voices.voices.values()],
-            default_voice=self.default_voice,
+            voices=[VoiceDetail(name=voice.name, description=voice.description) for voice in self.available_voices.voices.values()],
             description="F5-TTS 模型效果好，支持音色克隆。建议在GPU环境使用。"
         )
     def max_input_length(self) -> int:

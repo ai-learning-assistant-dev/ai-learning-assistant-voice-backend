@@ -1,14 +1,18 @@
 # models/model_interface.py
 from abc import ABC, abstractmethod
+from typing import List
 import numpy as np
+from pydantic import BaseModel
 
-class ModelInfo:
-    def __init__(self, model_name: str, device: str, voices: list, default_voice: str, description: str):
-        self.model_name = model_name
-        self.device = device
-        self.voices = voices
-        self.default_voice = default_voice
-        self.description = description
+class VoiceDetail(BaseModel):
+    name: str
+    description: str
+
+class ModelDetail(BaseModel):
+    model_name: str
+    description: str
+    device: str
+    voices: List[VoiceDetail]
 
 
 class TTSModelInterface(ABC):
@@ -32,7 +36,7 @@ class TTSModelInterface(ABC):
         pass
     
     @abstractmethod
-    def get_model_info(self) -> ModelInfo:
+    def get_model_info(self) -> ModelDetail:
         """Get model information."""
         pass
     

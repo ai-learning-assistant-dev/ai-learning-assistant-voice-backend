@@ -1,6 +1,7 @@
 # models/model_loader.py
 import importlib
 import logging
+from typing import List
 from models.model_interface import TTSModelInterface
 
 
@@ -25,5 +26,8 @@ class ModelManager:
             self._models[model.get_model_info().model_name] = model  
         except (ImportError, AttributeError) as e:
             raise ValueError(f"加载模型{model_path}失败: {e}")
+        
+    def get_available_models(self) -> List[str]:
+        return list(self._models.keys())
 
 model_manager = ModelManager()  # 全局实例

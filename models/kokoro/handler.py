@@ -1,7 +1,7 @@
 import logging
 import os
 import torch
-from models.model_interface import TTSModelInterface, ModelInfo
+from models.model_interface import TTSModelInterface, ModelDetail, VoiceDetail
 from kokoro import KModel, KPipeline
 import numpy as np
 import toml
@@ -40,12 +40,11 @@ class TTSModel(TTSModelInterface):
         if result_wav is None:
             raise ValueError("合成的音频数据为空")
         return result_wav 
-    def get_model_info(self) -> ModelInfo:
-        return ModelInfo(
+    def get_model_info(self) -> ModelDetail:
+        return ModelDetail(
             model_name=self.model_name,
             device=self.device,
-            voices=[voice.name for voice in self.available_voices.voices.values()],
-            default_voice=self.default_voice,
+            voices=[VoiceDetail(name=voice.name, description=voice.description) for voice in self.available_voices.voices.values()],
             description="Kokoro 模型推理速度快"
         )
     def max_input_length(self) -> int:
