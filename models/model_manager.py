@@ -1,4 +1,3 @@
-# models/model_loader.py
 import importlib
 import logging
 from typing import List
@@ -26,7 +25,19 @@ class ModelManager:
             self._models[model.get_model_info().model_name] = model  
         except (ImportError, AttributeError) as e:
             raise ValueError(f"加载模型{model_path}失败: {e}")
-        
+    
+    def download_model(self, model_path: str) -> str:
+        """下载模型"""
+        try:
+            module = importlib.import_module(f"models.{model_path.lower()}.handler")
+            model_class = getattr(module, f"TTSModel")
+            if not issubclass(model_class, TTSModelInterface):
+                raise TypeError(f"{model_path}TTSModel必须实现TTSModelInterface")
+            path = model_class.download_model()
+        except (ImportError, AttributeError) as e:
+            raise ValueError(f"下载模型{model_path}失败: {e}")
+        return path
+    
     def get_available_models(self) -> List[str]:
         return list(self._models.keys())
 

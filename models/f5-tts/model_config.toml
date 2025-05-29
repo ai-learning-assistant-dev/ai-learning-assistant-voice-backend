@@ -8,5 +8,7 @@ default_voice = "vmz"
 use_gpu = true
 
 [paths]
-model_path = "models/kokoro/weights.bin"
-vocoder_path = "models/kokoro/vocoder.bin"
+model_path = "model_download/model_1250000.safetensors"
+vocos_path = "model_download/vocos"
+
+voice_path = "voices"

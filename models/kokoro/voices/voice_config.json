@@ -3,13 +3,13 @@
         {
             "name": "zf_001",
             "description": "女声",
-            "filename": "placeholder",
+            "filename": "zf_001.pt",
             "language": "Chinese"
         },
         {
             "name": "zm_010",
             "description": "男声",
-            "filename": "placeholder",
+            "filename": "zm_010.pt",
             "language": "Chinese"
         }
     ]

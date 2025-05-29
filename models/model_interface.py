@@ -34,6 +34,12 @@ class TTSModelInterface(ABC):
             TTSModelInterface: 初始化完成的TTS模型实例
         """
         pass
+
+    @staticmethod
+    @abstractmethod
+    def download_model() -> str:
+        """Download model resources."""
+        pass
     
     @abstractmethod
     def get_model_info(self) -> ModelDetail:

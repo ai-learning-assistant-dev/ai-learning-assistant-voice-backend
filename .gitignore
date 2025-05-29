@@ -9,3 +9,7 @@ tts
 .venv
 .python-version
 .vscode
+.cache
+*.bin
+*.safetensors
+*.pth

@@ -1,5 +1,6 @@
 import logging
 import os
+from huggingface_hub import hf_hub_download
 import torch
 from models.model_interface import TTSModelInterface, ModelDetail, VoiceDetail
 from kokoro import KModel, KPipeline
@@ -15,23 +16,30 @@ class TTSModel(TTSModelInterface):
         self.device = "cuda" if torch.cuda.is_available() and config['performance']['use_gpu'] == True else "cpu"
         logging.info(f"使用设备: {self.device}")
         self.repo_id = config['model']['repo_id']
+        self.current_dir = os.path.dirname(os.path.abspath(__file__))
+
+        self.model_path = config['paths']['model_path']
+        self.model_path = os.path.join(self.current_dir, self.model_path)
         
         en_pipeline = KPipeline(lang_code='a', repo_id=self.repo_id, model=False)
         def en_callable(text):
             return next(en_pipeline(text)).phonemes
 
-        self.model = KModel(repo_id=self.repo_id).to(self.device).eval()
+        self.model = KModel(repo_id=self.repo_id, model=self.model_path).to(self.device).eval()
         self.pipeline = KPipeline(lang_code='z', repo_id=self.repo_id, model=self.model, en_callable=en_callable)
 
         self.default_voice = config['voice']['default_voice']
         self.model_name = config['model']['name']
-        
-        self.current_dir = os.path.dirname(os.path.abspath(__file__))
-        self.voice_dir = os.path.join(self.current_dir, "voices")
+        voice_dir_name = config['paths']['voice_path']
+        self.voice_dir = os.path.join(self.current_dir, voice_dir_name)
         self.available_voices = voice_util.load_voice_config(os.path.join(self.voice_dir, "voice_config.json"))
     def synthesize(self, text: str, voice_type: str, speed: float) -> np.ndarray:
         voice = self.available_voices.get_voice_config(voice_type, self.default_voice)
-        generator = self.pipeline(text, voice.get_voice_name(), speed)
+        voice_file_path = os.path.join(self.voice_dir, voice.filename)
+        if not os.path.exists(voice_file_path):
+            raise ValueError(f"音色文件不存在: {voice_file_path}")
+
+        generator = self.pipeline(text, voice_file_path, speed)
         result_wav = None
         for result in generator:
             if result.audio is not None:
@@ -51,11 +59,47 @@ class TTSModel(TTSModelInterface):
         return 100
     
     @staticmethod
+    def download_model() -> str:
+        import os
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        config = os.path.join(current_dir, "model_config.toml")
+        with open(config) as f:
+            config = toml.load(f)
+        repo_id = config['model']['repo_id']
+        model_download_dir = os.path.join(current_dir, "model_download")
+        os.makedirs(model_download_dir, exist_ok=True)
+        TTSModel.download_voices()
+
+        return hf_hub_download(repo_id=repo_id, filename=KModel.MODEL_NAMES[repo_id], local_dir=model_download_dir)
+    
+    @staticmethod
+    def download_voices():
+        import os
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        config = os.path.join(current_dir, "model_config.toml")
+        with open(config) as f:
+            config = toml.load(f)
+        repo_id = config['model']['repo_id']
+        voice_dir_name = config['paths']['voice_path']
+        voice_dir = os.path.join(current_dir, voice_dir_name)
+        available_voices = voice_util.load_voice_config(os.path.join(voice_dir, "voice_config.json"))
+        for voice in available_voices.voices.values():
+            path = hf_hub_download(repo_id=repo_id, filename=f'voices/{voice.filename}', local_dir=voice_dir)
+             # 移动文件到目标位置
+            target_path = os.path.join(voice_dir, voice.filename)
+            if path != target_path:  # 如果路径不同才移动
+                import shutil
+                shutil.move(path, target_path)
+                path = target_path
+                # 删除空的voices文件夹
+                voices_dir = os.path.join(voice_dir, 'voices')
+                if os.path.exists(voices_dir) and not os.listdir(voices_dir):
+                    os.rmdir(voices_dir)
+            logging.info(f"下载语音{voice.name}成功, 保存路径: {path}")
+    
+    @staticmethod
     def create() -> 'TTSModel':
         import os
         current_dir = os.path.dirname(os.path.abspath(__file__))
         config = os.path.join(current_dir, "model_config.toml")
         return TTSModel(config)
-        
-        
-

@@ -9,5 +9,5 @@ default_voice = "zf_001"
 use_gpu = true
 
 [paths]
-model_path = "models/kokoro/weights.bin"
-vocoder_path = "models/kokoro/vocoder.bin"
+model_path = "model_download/kokoro-v1_1-zh.pth"
+voice_path = "voices"
