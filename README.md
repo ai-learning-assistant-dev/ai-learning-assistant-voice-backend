@@ -10,12 +10,12 @@ pip install -r ./models/kokoro/requirements.txt
 pip install -r ./models/f5-tts/requirements.txt
 ```
 
-# 下载模型
+## 下载模型
 ```bash
 python ./cli.py download --model-names=kokoro,f5-tts
 ```
 
-# 启动服务
+## 启动服务
 ```bash
 python ./cli.py run --model-names=kokoro,f5-tts
 ```
