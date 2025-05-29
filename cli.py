@@ -23,7 +23,7 @@ def cli():
 @cli.command()
 @click.option('--model-names', 
               required=True,
-              help='要下载的模型名称列表，用逗号分隔 (如 Kokoro,Model2,Model3)')
+              help='要下载的模型名称列表，用逗号分隔 (如 kokoro,f5-tts)')
 def download(model_names):
     """下载模型及相关音色资源"""
     models = [name.strip() for name in model_names.split(',')]
@@ -39,7 +39,7 @@ def download(model_names):
 @cli.command()
 @click.option('--model-names', 
               required=True,
-              help='要加载的模型名称列表，用逗号分隔 (如 Kokoro,Model2,Model3)')
+              help='要加载的模型名称列表，用逗号分隔 (如 kokoro,f5-tts)')
 @click.option('--port', default=8000, help='服务端口')
 def run(model_names, port):
     """运行TTS服务命令，支持加载多个模型"""
