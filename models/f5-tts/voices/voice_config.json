@@ -1,17 +1,45 @@
 {
     "voices": [
         {
-            "name": "vmz",
-            "description": "vmz",
-            "filename": "vmz.wav",
-            "text": "我觉得真的是他们这个宣传鼓动策略，挺牛逼的。",
+            "name": "男性声音1",
+            "description": "男性声音，声音偏平稳",
+            "filename": "male1.wav",
+            "text": "秋天的风暴把它连叶带根全部吹走",
             "language": "Chinese"
         },
         {
-            "name": "glw",
-            "description": "顾桑",
-            "filename": "glw.wav",
-            "text": "窗外的雨滴轻轻敲打着玻璃，仿佛在演奏一首无声的夜曲。他翻开那本泛黄的日记本，指尖轻，指尖触碰纸页的瞬间，记忆如潮水般涌来。1987年春天，我在这里遇见了她。褪色的钢笔字在台灯下微微闪烁。",
+            "name": "男性声音2",
+            "description": "男性声音，声音带点情绪",
+            "filename": "male2.wav",
+            "text": "对，最晚的话二十四小时之内才会开机呢",
+            "language": "Chinese"
+        },
+        {
+            "name": "男性声音3",
+            "description": "男性声音，偏低沉",
+            "filename": "male3.wav",
+            "text": "杨秀珠申请美国政治庇护，让遣返过程一波三折",
+            "language": "Chinese"
+        },
+        {
+            "name": "女性声音1",
+            "description": "女性声音，声音带情绪",
+            "filename": "female1.wav",
+            "text": "咦，树上只有自己呀，一定是听错了。",
+            "language": "Chinese"
+        },
+        {
+            "name": "女性声音2",
+            "description": "女性声音，比较平稳",
+            "filename": "female2.wav",
+            "text": "那个可能就是1月初的时候，开机有延迟导致的",
+            "language": "Chinese"
+        },
+        {
+            "name": "女性声音3",
+            "description": "女性声音，比较平稳",
+            "filename": "female3.wav",
+            "text": "能用的办法试了个遍，沙子还是哗哗地往下掉。",
             "language": "Chinese"
         }
     ]
