@@ -13,3 +13,5 @@ tts
 *.bin
 *.safetensors
 *.pth
+build
+dist
