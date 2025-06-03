@@ -1,0 +1,1 @@
+./cli/cli.exe run --model-names=kokoro,f5-tts

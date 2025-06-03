@@ -6,5 +6,6 @@ pyinstaller cli.py --clean --noconfirm ^
     --add-data "models\kokoro:models\kokoro"^
     --add-data "models\f5-tts:models\f5-tts" ^
     --additional-hooks-dir pyinstaller-hooks
+copy start_exe.bat.sample dist\start_exe.bat
 REM test distribution
 .\dist\cli\cli.exe run --model-names=kokoro,f5-tts
