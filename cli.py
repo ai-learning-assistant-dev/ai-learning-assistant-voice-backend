@@ -4,6 +4,7 @@ from api.api_handler import app
 import uvicorn
 import logging
 import traceback
+import os
 
 def setup_logging(level):
     logging.basicConfig(
@@ -25,6 +26,7 @@ def cli():
               required=True,
               help='要下载的模型名称列表，用逗号分隔 (如 kokoro,f5-tts)')
 def download(model_names):
+    os.environ['HF_ENDPOINT'] = 'https://hf-mirror.com'
     """下载模型及相关音色资源"""
     models = [name.strip() for name in model_names.split(',')]
     
@@ -41,9 +43,11 @@ def download(model_names):
               required=True,
               help='要加载的模型名称列表，用逗号分隔 (如 kokoro,f5-tts)')
 @click.option('--port', default=8000, help='服务端口')
-def run(model_names, port):
+@click.option('--use-gpu', is_flag=True, help='是否使用GPU进行推理')
+def run(model_names, port, use_gpu):
     """运行TTS服务命令，支持加载多个模型"""
     models = [name.strip() for name in model_names.split(',')]
+    os.environ['USE_GPU'] = 'true' if use_gpu else 'false'
     
     for model_name in models:
         try:

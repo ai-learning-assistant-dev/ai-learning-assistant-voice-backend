@@ -5,19 +5,19 @@ from f5_tts.api import F5TTS
 from huggingface_hub import hf_hub_download
 import numpy as np
 import torch
+import env
 from models.model_interface import TTSModelInterface, ModelDetail, VoiceDetail
 import toml
 import models.voice_util as voice_util
 
 class TTSModel(TTSModelInterface):
     def __init__(self, config_path: str):
-        with open(config_path) as f:
+        with open(config_path, encoding='utf-8') as f:
             config = toml.load(f)
 
         self.current_dir = os.path.dirname(os.path.abspath(__file__))
         self.default_voice = config['voice']['default_voice']
         self.model_name = config['model']['name']
-        self.use_gpu = config['performance']['use_gpu']
         
         self.model_path = config['paths']['model_path']
         self.model_path = os.path.join(self.current_dir, self.model_path)
@@ -25,11 +25,13 @@ class TTSModel(TTSModelInterface):
         self.vocos_path = config['paths']['vocos_path']
         self.vocos_path = os.path.join(self.current_dir, self.vocos_path)
         
-        
         self.voice_dir = os.path.join(self.current_dir, config['paths']['voice_path'])
         self.available_voices = voice_util.load_voice_config(os.path.join(self.voice_dir, "voice_config.json"))
+        
+        use_gpu = env.USE_GPU
+        device = torch.device("cuda" if use_gpu and torch.cuda.is_available() else "cpu")
 
-        self.f5tts = F5TTS(ckpt_file=self.model_path, vocoder_local_path=self.vocos_path, device="cpu" if not self.use_gpu else None)
+        self.f5tts = F5TTS(ckpt_file=self.model_path, vocoder_local_path=self.vocos_path, device=device)
     def synthesize(self, text: str, voice_type: str, speed: float) -> np.ndarray:
         voice = self.available_voices.get_voice_config(voice_type, self.default_voice)
         
@@ -60,7 +62,7 @@ class TTSModel(TTSModelInterface):
         import os
         current_dir = os.path.dirname(os.path.abspath(__file__))
         config = os.path.join(current_dir, "model_config.toml")
-        with open(config) as f:
+        with open(config, encoding='utf-8') as f:
             config = toml.load(f)
         model_download_dir = os.path.join(current_dir, "model_download")
         os.makedirs(model_download_dir, exist_ok=True)
@@ -83,7 +85,7 @@ class TTSModel(TTSModelInterface):
         import os
         current_dir = os.path.dirname(os.path.abspath(__file__))
         config = os.path.join(current_dir, "model_config.toml")
-        with open(config) as f:
+        with open(config, encoding='utf-8') as f:
             config = toml.load(f)
         
         vocos_path = config['paths']['vocos_path']

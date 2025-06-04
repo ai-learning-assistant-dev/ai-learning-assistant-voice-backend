@@ -2,6 +2,7 @@ import logging
 import os
 from huggingface_hub import hf_hub_download
 import torch
+import env
 from models.model_interface import TTSModelInterface, ModelDetail, VoiceDetail
 from kokoro import KModel, KPipeline
 import numpy as np
@@ -13,8 +14,26 @@ class TTSModel(TTSModelInterface):
         with open(config_path) as f:
             config = toml.load(f)
         
-        self.device = "cuda" if torch.cuda.is_available() and config['performance']['use_gpu'] == True else "cpu"
+        use_gpu = env.USE_GPU
+        if use_gpu == False:
+            self.device = torch.device("cpu")
+        elif torch.cuda.is_available():
+            self.device = torch.device("cuda")
+        elif os.name == 'nt':
+            try:
+                import torch_directml
+                if torch_directml.device_count() == 0:
+                    raise Exception("未找到可用的DirectML设备")
+                self.device = torch_directml.device()
+            except Exception as e:
+                logging.error(f"[kokoro] 回退到CPU推理: {str(e)}")
+                self.device = torch.device("cpu")
+        else:
+            logging.error("[kokoro] CUDA不可用，回退到CPU推理")
+            self.device = torch.device("cpu")
+            
         logging.info(f"使用设备: {self.device}")
+        
         self.repo_id = config['model']['repo_id']
         self.current_dir = os.path.dirname(os.path.abspath(__file__))
 
@@ -25,7 +44,9 @@ class TTSModel(TTSModelInterface):
         def en_callable(text):
             return next(en_pipeline(text)).phonemes
 
-        self.model = KModel(repo_id=self.repo_id, model=self.model_path).to(self.device).eval()
+        self.model = KModel(repo_id=self.repo_id, model=self.model_path)
+        self.model.to(self.device).eval()
+        
         self.pipeline = KPipeline(lang_code='z', repo_id=self.repo_id, model=self.model, en_callable=en_callable)
 
         self.default_voice = config['voice']['default_voice']
@@ -51,7 +72,7 @@ class TTSModel(TTSModelInterface):
     def get_model_info(self) -> ModelDetail:
         return ModelDetail(
             model_name=self.model_name,
-            device=self.device,
+            device=str(self.device),
             voices=[VoiceDetail(name=voice.name, description=voice.description) for voice in self.available_voices.voices.values()],
             description="Kokoro 模型推理速度快"
         )
