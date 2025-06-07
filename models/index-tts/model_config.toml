@@ -1,14 +1,13 @@
 [model]
-name = "f5-tts"
+name = "index-tts"
 
 [voice]
 default_voice = "男性声音1"
 
 [performance]
 use_gpu = true
+use_fast_infer = false
 
 [paths]
-model_path = "model_download/model_1250000.safetensors"
-vocos_path = "model_download/vocos"
-
+model_path = "model_download"
 voice_path = "voices"

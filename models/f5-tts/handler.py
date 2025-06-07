@@ -11,7 +11,7 @@ import models.voice_util as voice_util
 
 class TTSModel(TTSModelInterface):
     def __init__(self, config_path: str):
-        with open(config_path) as f:
+        with open(config_path, encoding="utf-8") as f:
             config = toml.load(f)
 
         self.current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -60,7 +60,7 @@ class TTSModel(TTSModelInterface):
         import os
         current_dir = os.path.dirname(os.path.abspath(__file__))
         config = os.path.join(current_dir, "model_config.toml")
-        with open(config) as f:
+        with open(config, encoding="utf-8") as f:
             config = toml.load(f)
         model_download_dir = os.path.join(current_dir, "model_download")
         os.makedirs(model_download_dir, exist_ok=True)
@@ -83,7 +83,7 @@ class TTSModel(TTSModelInterface):
         import os
         current_dir = os.path.dirname(os.path.abspath(__file__))
         config = os.path.join(current_dir, "model_config.toml")
-        with open(config) as f:
+        with open(config, encoding="utf-8") as f:
             config = toml.load(f)
         
         vocos_path = config['paths']['vocos_path']
