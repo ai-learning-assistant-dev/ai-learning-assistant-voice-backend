@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-# ai-learning-assistant-voice-backend
-=======
 # Quickstart
 
 ## 环境
@@ -45,4 +42,3 @@ python ./test_client.py --model f5-tts --voice 男性声音1
 # 测试index-tts模型
 python ./test_client.py --model index-tts --voice 男性声音1
 ```
->>>>>>> nanyun_dev
