@@ -15,3 +15,6 @@ tts
 *.pth
 build
 dist
+ai-tts.tar
+cli.spec
+exclude

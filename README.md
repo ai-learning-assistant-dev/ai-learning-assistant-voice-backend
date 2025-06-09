@@ -2,17 +2,20 @@
 
 ## 安装依赖
 ```bash
+# 安装pytorch，如果环境已经有了，就不用重复安装了
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
 # 安装主依赖
 pip install -r ./requirements.txt
-
-# 安装模型特定依赖
-pip install -r ./models/kokoro/requirements.txt
-pip install -r ./models/f5-tts/requirements.txt
 ```
 
 ## 下载模型
 ```bash
 python ./cli.py download --model-names=kokoro,f5-tts
+```
+
+## 预热模型，下载运行时才会下载的依赖
+```bash
+python ./cli.py warm-up --model-names=kokoro,f5-tts
 ```
 
 ## 启动服务

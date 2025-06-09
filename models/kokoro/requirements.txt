@@ -1,7 +1,0 @@
-kokoro==0.9.4
-misaki[zh]>=0.8.2
-soundfile
-torch==2.7.0+cu128
-torchaudio==2.7.0+cu128
-torchvision==0.22.0+cu128
-toml

@@ -2,8 +2,10 @@ transformers==4.51.2
 accelerate
 sentencepiece
 bitsandbytes
-torch==2.7.0+cu128
-torchaudio==2.7.0+cu128
-torchvision==0.22.0+cu128
 pyinstaller
 pyinstaller-hooks-contrib
+kokoro==0.9.4
+misaki[zh]>=0.8.2
+soundfile
+f5-tts==1.1.4
+toml
