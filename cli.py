@@ -1,3 +1,4 @@
+import os
 import click
 from models.model_manager import model_manager
 from api.api_handler import app
@@ -52,11 +53,10 @@ def run(model_names, port):
         except Exception as e:
             click.echo(f"加载模型 {model_name} 失败: {str(e)}", err=True)
             logging.error(traceback.format_exc())  # 打印完整栈信息
-            
-    
     uvicorn.run(app, host="0.0.0.0", port=port)
     
     
 
 if __name__ == "__main__":
+    os.environ['HF_ENDPOINT'] = 'https://hf-mirror.com'
     cli()
