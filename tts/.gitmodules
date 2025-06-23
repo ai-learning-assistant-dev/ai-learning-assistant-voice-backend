@@ -1,0 +1,3 @@
+[submodule "models/index-tts/index-tts-src"]
+	path = models/index-tts/index-tts-src
+	url = git@github.com:index-tts/index-tts.git

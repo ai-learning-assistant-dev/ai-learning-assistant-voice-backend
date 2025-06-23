@@ -1,0 +1,15 @@
+.conda
+__pycache__
+*.pyc
+*.pyd
+*.so
+*.dll
+*.mp3
+tts
+.venv
+.python-version
+.vscode
+.cache
+*.bin
+*.safetensors
+*.pth

@@ -1,44 +1,36 @@
-# Quickstart
+# TTS自动模型选择功能说明
 
-## 环境
+## 功能概述
 
-- python 3.11
+该功能允许TTS服务根据运行环境自动选择最合适的模型：
+- **CUDA环境**：自动选择 `index-tts` 模型（GPU加速）
+- **CPU环境**：自动选择 `kokoro` 模型（CPU优化）
 
-## 安装依赖
+## /voice挂载到 /app/tts/models/index-tts
+
+## 使用方法
+
+### 1. Docker Run 启动（推荐）
+
+#### 自动检测模式（默认）
 ```bash
-# 安装主依赖
-pip install -r ./requirements.txt
+# 启动所有服务
+docker run -e SERVICE_TYPE=both your-image ./start.sh
 
-# 安装模型特定依赖
-# kokoro
-pip install -r ./models/kokoro/requirements.txt
+# 只启动ASR服务
+docker run -e SERVICE_TYPE=asr your-image ./start.sh
 
-# f5-tts
-pip install -r ./models/f5-tts/requirements.txt
-
-# index-tts
-git submodule update --init --recursive
-cd models/index-tts && pip install -r ./requirements.txt
+# 只启动TTS服务
+docker run -e SERVICE_TYPE=tts your-image ./start.sh
 ```
 
-## 下载模型
+#### 手动指定模型
+如果需要强制使用特定模型，可以设置环境变量：
+
 ```bash
-python ./cli.py download --model-names=kokoro,f5-tts,index-tts
-```
+# 强制使用kokoro模型
+TTS_MODELS=kokoro docker-compose up ai-voice-backend
 
-## 启动服务
-```bash
-python ./cli.py run --model-names=kokoro,f5-tts,index-tts
-```
-
-## 测试
-```bash
-# 测试kokoro模型
-python ./test_client.py --model kokoro --voice zm_010
-
-# 测试f5-tts模型
-python ./test_client.py --model f5-tts --voice 男性声音1
-
-# 测试index-tts模型
-python ./test_client.py --model index-tts --voice 男性声音1
+# 强制使用index-tts模型
+TTS_MODELS=index-tts docker-compose up ai-voice-backend
 ```
