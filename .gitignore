@@ -4,8 +4,22 @@
 models_cache/
 
 # 模型下载目录
-*/model_download/
+**/model_download/
+model_download/
 
-*/__pycache__
+# Python缓存文件
+__pycache__/
+**/__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
 
+# Docker镜像文件
 ai-voice-backend-image-1.0.tar
+
+# 其他临时文件
+.DS_Store
+.vscode/
+.idea/
+*.log

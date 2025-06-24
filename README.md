@@ -6,11 +6,16 @@
 - **CUDA环境**：自动选择 `index-tts` 模型（GPU加速）
 - **CPU环境**：自动选择 `kokoro` 模型（CPU优化）
 
-## /voice挂载到 /app/tts/models/index-tts
+## 音色控制
+
+/voice挂载到 /app/tts/models/index-tts
 
 # 使用方法
 ## 启动容器
 ```bash
+# 导入镜像
+docker load -i ai-voice-backend-image-1.0.tar
+
 docker run -d --name ai-voice-backend --gpus all -p 8000:8000 -p 9000:9000 ai-voice-backend:v1.0 tail -f /dev/null
 ```
 ## 关闭容器
@@ -54,4 +59,13 @@ docker exec -e SERVICE_TYPE=asr ai-voice-backend ./stop.sh
 
 # 只关闭TTS服务
 docker exec -e SERVICE_TYPE=tts ai-voice-backend ./stop.sh
+```
+
+# 镜像构建与导出
+
+```bash
+./build.sh
+
+docker save ai-voice-backend:v1.0 -o ai-voice-backend-image-1.0.tar
+
 ```
