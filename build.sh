@@ -51,10 +51,7 @@ if [ $? -eq 0 ]; then
     
     echo ""
     echo "使用方法:"
-    echo "1. 使用 docker-compose-offline.yml 启动服务:"
-    echo "   docker-compose -f docker-compose-offline.yml up -d"
-    echo ""
-    echo "2. 或直接运行容器:"
+    echo "直接运行容器:"
     echo "   docker run -d --gpus all -p 8000:8000 -p 9000:9000 $IMAGE_NAME:$TAG"
     
 else

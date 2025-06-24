@@ -11,4 +11,5 @@ if [ -n "${TTS_MODELS}" ]; then
     python3 cli.py run --model-names ${TTS_MODELS} --port ${TTS_PORT:-8000}
 else
     echo "未指定TTS模型，启用自动检测模式"
-    python3 cli.py run --auto-detect --port ${TTS_PORT:-8000} 
+    python3 cli.py run --auto-detect --port ${TTS_PORT:-8000}
+fi 

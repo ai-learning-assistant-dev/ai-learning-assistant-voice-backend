@@ -38,4 +38,4 @@ modelscope
 # ========================================
 # Kokoro TTS
 kokoro==0.9.4
-# misaki[zh]>=0.8.2
+misaki[zh]>=0.8.2

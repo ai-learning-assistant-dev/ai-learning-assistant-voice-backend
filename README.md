@@ -8,29 +8,50 @@
 
 ## /voice挂载到 /app/tts/models/index-tts
 
-## 使用方法
-
-### 1. Docker Run 启动（推荐）
-
-#### 自动检测模式（默认）
+# 使用方法
+## 启动容器
 ```bash
-# 启动所有服务
-docker run -e SERVICE_TYPE=both your-image ./start.sh
-
-# 只启动ASR服务
-docker run -e SERVICE_TYPE=asr your-image ./start.sh
-
-# 只启动TTS服务
-docker run -e SERVICE_TYPE=tts your-image ./start.sh
+docker run -d --name ai-voice-backend --gpus all -p 8000:8000 -p 9000:9000 ai-voice-backend:v1.0 tail -f /dev/null
+```
+## 关闭容器
+```bash
+docker stop ai-voice-backend
 ```
 
-#### 手动指定模型
+## docker exec 启动服务
+
+### 自动检测模式（默认）
+```bash
+# 启动所有服务
+docker exec ai-voice-backend ./start.sh
+
+# 只启动ASR服务
+docker exec -e SERVICE_TYPE=asr ai-voice-backend ./start.sh
+
+# 只启动TTS服务
+docker exec -e SERVICE_TYPE=tts ai-voice-backend ./start.sh
+```
+
+### 手动指定模型
 如果需要强制使用特定模型，可以设置环境变量：
 
 ```bash
 # 强制使用kokoro模型
-TTS_MODELS=kokoro docker-compose up ai-voice-backend
+docker exec -e TTS_MODELS=kokoro ai-voice-backend ./start.sh
 
 # 强制使用index-tts模型
-TTS_MODELS=index-tts docker-compose up ai-voice-backend
+docker exec -e TTS_MODELS=index-tts ai-voice-backend ./start.sh
+```
+
+# 关闭服务
+
+```bash
+# 关闭所有服务
+docker exec ai-voice-backend ./stop.sh
+
+# 只关闭ASR服务
+docker exec -e SERVICE_TYPE=asr ai-voice-backend ./stop.sh
+
+# 只关闭TTS服务
+docker exec -e SERVICE_TYPE=tts ai-voice-backend ./stop.sh
 ```
