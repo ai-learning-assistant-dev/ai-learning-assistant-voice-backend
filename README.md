@@ -8,7 +8,7 @@
 
 ## 音色控制
 
-/voice挂载到 /app/tts/models/index-tts
+本地对应模型/voices挂载到 /app/tts/models/index-tts/voices 和 /app/tts/models/kokoro/voices
 
 # 使用方法
 ## 启动容器
