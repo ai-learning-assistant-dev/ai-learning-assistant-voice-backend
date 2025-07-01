@@ -42,7 +42,6 @@ RUN cd /app/tts/models/index-tts && pip3 install --no-cache-dir -r requirements.
 # 复制预下载的模型文件到镜像中
 # 这样模型就直接打包在镜像里，不需要运行时下载或挂载
 COPY models_cache/ /app/models_cache/
-COPY stop.sh /app/stop.sh
 
 # 确保模型目录权限正确
 RUN chmod -R 755 /app/models_cache/
@@ -61,6 +60,8 @@ ENV SENSEVOICE_MODEL=/app/models_cache/modelscope/models/iic/SenseVoiceSmall
 COPY start.sh /app/start.sh
 COPY start_asr.sh /app/start_asr.sh
 COPY start_tts.sh /app/start_tts.sh
+COPY stop.sh /app/stop.sh
+COPY status.sh /app/status.sh
 
 # 设置脚本权限
 RUN chmod +x /app/start.sh /app/start_asr.sh /app/start_tts.sh

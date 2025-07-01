@@ -61,6 +61,25 @@ docker exec -e SERVICE_TYPE=asr ai-voice-backend ./stop.sh
 docker exec -e SERVICE_TYPE=tts ai-voice-backend ./stop.sh
 ```
 
+# 服务监控
+
+```bash
+# 关闭所有服务
+# 测试TTS服务状态
+docker exec -e SERVICE_TYPE=tts ai-voice-backend ./status.sh
+
+# 测试ASR服务状态  
+docker exec -e SERVICE_TYPE=asr ai-voice-backend ./status.sh
+
+# 测试所有服务状态
+docker exec ai-voice-backend ./status.sh
+# 返回结果
+{  
+    "asr": {"status": "running", "model": "sensevoice", "pid": 31}, 
+    "tts": {"status": "stopped"}
+}
+```
+
 # 镜像构建与导出
 
 ```bash
