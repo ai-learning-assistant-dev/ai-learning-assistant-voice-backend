@@ -1,10 +1,11 @@
+import threading
 import requests
 import json
 import time
 import argparse
 
 def call_tts_api(text, voice="glw", output_file="output.mp3", model="kokoro"):
-    url = "http://localhost:8000/v1/audio/speech"
+    url = "http://localhost:8001/v1/audio/speech"
     headers = {"Content-Type": "application/json"}
     data = {
         "input": text,
@@ -29,7 +30,7 @@ def call_tts_api(text, voice="glw", output_file="output.mp3", model="kokoro"):
         print(f"调用API出错: {str(e)}")
 
 def call_get_models_info():
-    url = "http://localhost:8000/v1/models/info"
+    url = "http://localhost:8001/v1/models/info"
     headers = {"Content-Type": "application/json"}
     try:
         start_time = time.time()
@@ -54,12 +55,30 @@ if __name__ == "__main__":
     parser.add_argument('--voice', type=str, default='glw', help='语音类型')
     parser.add_argument('--output', type=str, default='output.mp3', help='输出文件名')
     parser.add_argument('--model', type=str, default='kokoro', help='模型名称')
-    
-    # 示例调用
-    call_tts_api(
-        text=parser.parse_args().text,
-        voice=parser.parse_args().voice,
-        output_file=parser.parse_args().output,
-        model=parser.parse_args().model
+    args = parser.parse_args()
+
+    def call_tts_with_output(output_suffix):
+        output_file = args.output.replace('.mp3', f'{output_suffix}.mp3')
+        call_tts_api(
+            text=args.text,
+            voice=args.voice,
+            output_file=output_file,
+            model=args.model
     )
+    
+     # 创建第一个线程
+    thread1 = threading.Thread(target=call_tts_with_output, args=('1',))
+    thread1.start()
+
+    # 等待 10 秒
+    time.sleep(10)
+
+    # 创建第二个线程
+    thread2 = threading.Thread(target=call_tts_with_output, args=('2',))
+    thread2.start()
+
+    # 等待两个线程执行完毕
+    thread1.join()
+    thread2.join()
+
     call_get_models_info()
