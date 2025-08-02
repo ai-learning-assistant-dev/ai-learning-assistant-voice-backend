@@ -52,4 +52,30 @@ def split_text_safely(text, max_length=100):
                         else:
                             result.append(sub[i:])
     
-    return result
+    # 合并短段落，使得每段尽可能接近max_length
+    merged_result = []
+    current_segment = ""
+    
+    for segment in result:
+        # 如果当前段落加上新段落不超过最大长度，则合并
+        if len(current_segment) + len(segment) + 1 <= max_length:
+            if current_segment:
+                current_segment += " " + segment
+            else:
+                current_segment = segment
+        else:
+            # 如果当前段落不为空，添加到结果中
+            if current_segment:
+                merged_result.append(current_segment)
+            # 如果当前段落本身就超过最大长度，直接添加
+            if len(segment) >= max_length:
+                merged_result.append(segment)
+                current_segment = ""
+            else:
+                current_segment = segment
+    
+    # 添加最后一个段落
+    if current_segment:
+        merged_result.append(current_segment)
+    
+    return merged_result
