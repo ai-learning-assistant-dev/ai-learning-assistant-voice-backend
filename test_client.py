@@ -4,8 +4,10 @@ import json
 import time
 import argparse
 
+port = 8001
+
 def call_tts_api(text, voice="glw", output_file="output.mp3", model="kokoro"):
-    url = "http://localhost:8001/v1/audio/speech"
+    url = f"http://localhost:{port}/v1/audio/speech"
     headers = {"Content-Type": "application/json"}
     data = {
         "input": text,
@@ -30,7 +32,7 @@ def call_tts_api(text, voice="glw", output_file="output.mp3", model="kokoro"):
         print(f"调用API出错: {str(e)}")
 
 def call_get_models_info():
-    url = "http://localhost:8001/v1/models/info"
+    url = f"http://localhost:{port}/v1/models/info"
     headers = {"Content-Type": "application/json"}
     try:
         start_time = time.time()
@@ -55,7 +57,9 @@ if __name__ == "__main__":
     parser.add_argument('--voice', type=str, default='glw', help='语音类型')
     parser.add_argument('--output', type=str, default='output.mp3', help='输出文件名')
     parser.add_argument('--model', type=str, default='kokoro', help='模型名称')
+    parser.add_argument('--port', type=int, default=port, help='端口号')
     args = parser.parse_args()
+    port = args.port
 
     def call_tts_with_output(output_suffix):
         output_file = args.output.replace('.mp3', f'{output_suffix}.mp3')

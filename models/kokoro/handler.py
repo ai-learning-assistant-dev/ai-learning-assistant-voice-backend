@@ -54,7 +54,8 @@ class TTSModel(TTSModelInterface):
             model_name=self.model_name,
             device=self.device,
             voices=[VoiceDetail(name=voice.name, description=voice.description) for voice in self.available_voices.voices.values()],
-            description="Kokoro 模型推理速度快"
+            description="Kokoro 模型推理速度快",
+            max_input_length=self.max_input_length()
         )
     def max_input_length(self) -> int:
         return 100
