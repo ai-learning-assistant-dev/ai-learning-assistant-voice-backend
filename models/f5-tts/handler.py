@@ -48,7 +48,8 @@ class TTSModel(TTSModelInterface):
             model_name=self.model_name,
             device=self.f5tts.device,
             voices=[VoiceDetail(name=voice.name, description=voice.description) for voice in self.available_voices.voices.values()],
-            description="F5-TTS 模型效果好，支持音色克隆。建议在GPU环境使用。"
+            description="F5-TTS 模型效果好，支持音色克隆。建议在GPU环境使用。",
+            max_input_length=self.max_input_length()
         )
     def max_input_length(self) -> int:
         return 300

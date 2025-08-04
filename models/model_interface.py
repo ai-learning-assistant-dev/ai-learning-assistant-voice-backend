@@ -13,6 +13,7 @@ class ModelDetail(BaseModel):
     description: str
     device: str
     voices: List[VoiceDetail]
+    max_input_length: int
 
 
 class TTSModelInterface(ABC):
