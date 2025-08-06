@@ -20,12 +20,15 @@ class TTSModel(TTSModelInterface):
 
         self.model_path = config['paths']['model_path']
         self.model_path = os.path.join(self.current_dir, self.model_path)
+        self.config_path = os.path.join(self.current_dir, config['paths']['config_path'])
+
         
         en_pipeline = KPipeline(lang_code='a', repo_id=self.repo_id, model=False)
         def en_callable(text):
             return next(en_pipeline(text)).phonemes
 
-        self.model = KModel(repo_id=self.repo_id, model=self.model_path).to(self.device).eval()
+        # self.model = KModel(repo_id=self.repo_id, model=self.model_path).to(self.device).eval()
+        self.model = KModel(repo_id=self.repo_id, model=self.model_path, config=self.config_path).to(self.device).eval()
         self.pipeline = KPipeline(lang_code='z', repo_id=self.repo_id, model=self.model, en_callable=en_callable)
 
         self.default_voice = config['voice']['default_voice']
@@ -69,6 +72,8 @@ class TTSModel(TTSModelInterface):
         model_download_dir = os.path.join(current_dir, "model_download")
         os.makedirs(model_download_dir, exist_ok=True)
         TTSModel.download_voices()
+
+        hf_hub_download(repo_id=repo_id, filename='config.json', local_dir=model_download_dir)
 
         return hf_hub_download(repo_id=repo_id, filename=KModel.MODEL_NAMES[repo_id], local_dir=model_download_dir)
     

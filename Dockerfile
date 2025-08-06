@@ -19,8 +19,6 @@ RUN sed -i 's/archive.ubuntu.com/mirrors.aliyun.com/g' /etc/apt/sources.list && 
 
 RUN apt-get update && apt-get install -y ffmpeg && rm -rf /var/lib/apt/lists/*
 
-
-
 RUN pip3 config set global.index-url https://mirrors.aliyun.com/pypi/simple/
 
 RUN pip3 install --no-cache-dir --timeout 60 --retries 3 \

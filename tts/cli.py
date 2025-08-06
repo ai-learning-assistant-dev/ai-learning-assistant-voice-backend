@@ -1,3 +1,4 @@
+import os
 import click
 from models.model_manager import model_manager
 from api.api_handler import app
@@ -111,4 +112,5 @@ def run(model_names, port, auto_detect):
     
 
 if __name__ == "__main__":
+    os.environ['HF_ENDPOINT'] = 'https://hf-mirror.com'
     cli()
