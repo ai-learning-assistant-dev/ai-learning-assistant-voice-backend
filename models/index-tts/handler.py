@@ -8,7 +8,7 @@ import torch
 from models.model_interface import TTSModelInterface, ModelDetail, VoiceDetail
 import toml
 import models.voice_util as voice_util
-
+import env
 class TTSModel(TTSModelInterface):
     def __init__(self, config_path: str):
         with open(config_path, encoding="utf-8") as f:
@@ -17,16 +17,15 @@ class TTSModel(TTSModelInterface):
         self.current_dir = os.path.dirname(os.path.abspath(__file__))
         self.default_voice = config['voice']['default_voice']
         self.model_name = config['model']['name']
-        self.use_gpu = config['performance']['use_gpu']
         self.model_path = config['paths']['model_path']
         self.model_path = os.path.join(self.current_dir, self.model_path)
         self.voice_dir = os.path.join(self.current_dir, config['paths']['voice_path'])
         self.available_voices = voice_util.load_voice_config(os.path.join(self.voice_dir, "voice_config.json"))
         
         self.use_fast_infer = config['performance']['use_fast_infer']
-        use_gpu = config['performance']['use_gpu']
+        use_gpu = (env.USE_GPU == "true" and torch.cuda.is_available())
         device = None
-        if not use_gpu and torch.cuda.is_available():
+        if not use_gpu:
             device = "cpu"
 
         cfg_path = os.path.join(self.model_path, "config.yaml")

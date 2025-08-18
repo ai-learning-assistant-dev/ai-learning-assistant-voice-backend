@@ -15,6 +15,9 @@ environment_variables: dict[str, Callable[[], Any]] = {
     # ================== Runtime Env Vars ==================
     # The default model to use.
     "DEFAULT_MODEL": lambda: os.getenv("DEFAULT_MODEL", "kokoro"),
+
+    # Whether to use GPU for inference, default is true.
+    "USE_GPU": lambda: os.getenv("USE_GPU", "true"),
 }
 
 # --8<-- [end:env-vars-definition]

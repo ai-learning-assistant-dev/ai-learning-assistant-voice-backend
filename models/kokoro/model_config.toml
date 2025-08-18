@@ -5,9 +5,6 @@ repo_id = 'hexgrad/Kokoro-82M-v1.1-zh'
 [voice]
 default_voice = "zf_001"
 
-[performance]
-use_gpu = true
-
 [paths]
 model_path = "model_download/kokoro-v1_1-zh.pth"
 config_path = "model_download/config.json"
