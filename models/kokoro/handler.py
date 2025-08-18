@@ -7,13 +7,14 @@ from kokoro import KModel, KPipeline
 import numpy as np
 import toml
 import models.voice_util as voice_util
+import env
 
 class TTSModel(TTSModelInterface):
     def __init__(self, config_path: str):
         with open(config_path) as f:
             config = toml.load(f)
         
-        self.device = "cuda" if torch.cuda.is_available() and config['performance']['use_gpu'] == True else "cpu"
+        self.device = "cuda" if torch.cuda.is_available() and env.USE_GPU == "true" else "cpu"
         logging.info(f"使用设备: {self.device}")
         self.repo_id = config['model']['repo_id']
         self.current_dir = os.path.dirname(os.path.abspath(__file__))

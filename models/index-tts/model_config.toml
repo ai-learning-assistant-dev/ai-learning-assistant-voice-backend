@@ -5,7 +5,6 @@ name = "index-tts"
 default_voice = "男性声音1"
 
 [performance]
-use_gpu = true
 use_fast_infer = true
 
 [paths]
