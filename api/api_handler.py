@@ -52,7 +52,7 @@ async def tts_handler(request: TTSRequest):
 
         # 创建内存中的音频文件
         audio_buffer = io.BytesIO()
-        sample_rate = env.AUDIO_SAMPLE_RATE
+        sample_rate = int(env.AUDIO_SAMPLE_RATE)
         sf.write(audio_buffer, combined_audio, sample_rate, format=request.response_format)
         audio_buffer.seek(0)
 
