@@ -111,4 +111,6 @@ def run(model_names, port, auto_detect):
     
 
 if __name__ == "__main__":
+    import os
+    os.environ["HF_ENDPOINT"] = "https://hf-mirror.com"
     cli()

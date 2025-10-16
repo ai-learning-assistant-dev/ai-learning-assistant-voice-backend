@@ -75,7 +75,9 @@ if __name__ == "__main__":
     thread1.start()
 
     # 等待 10 秒
-    time.sleep(10)
+    thread1.join()
+    call_get_models_info()
+    exit(0)
 
     # 创建第二个线程
     thread2 = threading.Thread(target=call_tts_with_output, args=('2',))

@@ -13,3 +13,7 @@ tts
 *.bin
 *.safetensors
 *.pth
+*.pt
+checkpoints
+*.model
+qwen0.6bemo4-merge

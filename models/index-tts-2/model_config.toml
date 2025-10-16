@@ -1,0 +1,16 @@
+[model]
+name = "index-tts-2"
+
+[voice]
+default_voice = "男性声音1"
+
+[performance]
+use_fp16 = true
+
+use_deepspeed = true
+
+
+
+[paths]
+model_path = "model_download"
+voice_path = "voices"
