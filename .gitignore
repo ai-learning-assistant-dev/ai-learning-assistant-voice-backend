@@ -13,3 +13,10 @@ tts
 *.bin
 *.safetensors
 *.pth
+
+
+# uv environment files
+*.egg-info/
+build/
+dist/
+*.egg
